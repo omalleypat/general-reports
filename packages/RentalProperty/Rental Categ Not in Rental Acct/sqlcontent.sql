@@ -1,0 +1,1 @@
+SELECT * FROM alldata WHERE CATEGID IS 26 AND AccountID is not 17

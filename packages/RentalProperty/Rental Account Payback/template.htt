@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http - equiv = "Content-Type" content = "text/html">
+    <title><TMPL_VAR REPORTNAME></title>
+    <script src = "ChartNew.js"></script>
+    <script src = "sorttable.js"></script>
+    <link href = "master.css" rel = "stylesheet">
+</head>
+<body>
+<div class = "container">
+<h3><TMPL_VAR REPORTNAME></h3>
+<TMPL_VAR TODAY><hr>
+<div class = "row">
+This report displays the following transactions:
+<ul>
+<li> all the transfers into/out of the Rental account (excluding mortgage payments) </li>
+<li>  all transactions that were made in other accounts to pay Rental expenses </li>
+</ul> 
+The total at the bottom should equal zero since all future paybacks are included. The total of all future paybacks<sup><a href="#fn1" id="ref1">1</a></sup> is $<TMPL_VAR "PAYBACKTOTAL">
+<hr>
+<table class = "table">
+<thead>
+    <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>AccountName</th>
+        <th>ToAccountName</th>
+        <th>TransactionNumber</th>
+        <th>Status</th>
+        <th>Notes</th>
+
+    </tr>
+</thead>
+<tbody>
+    <TMPL_LOOP NAME=CONTENTS>
+        <tr>
+        <td class = "text-right"><TMPL_VAR "ID"></td>
+        <td><TMPL_VAR "Date"></td>
+        <td><TMPL_VAR "Category"></td>
+        <td class = "money"><TMPL_VAR "Amount"></td>
+        <td><TMPL_VAR "AccountName"></td>
+        <td><TMPL_VAR "ToAccountName"></td>
+        <td><TMPL_VAR "TransactionNumber"></td>
+        <td><TMPL_VAR "Status"></td>
+        <td><TMPL_VAR "Notes"></td>
+
+        </tr>
+    </TMPL_LOOP>
+	<tr>
+		<td> </td>
+		<td> </td>
+		<td class="text-right"><b>Total</b></td>
+		<td class="money"><TMPL_VAR TOTAL></td>
+	</tr>
+</tbody>
+
+</table>
+</div>
+<TMPL_LOOP ERRORS>
+    <TMPL_VAR ERROR>
+</TMPL_LOOP>
+</div>
+</div>
+<sup id="fn1">1. Future paybacks are any future transaction marked void or followup<a href="#ref1" title="Jump back to footnote 1 in the text.">↩</a></sup>
+</body>
+<script>
+    <!-- Format double to base currency -->
+    function currency(n) {
+        n = parseFloat(n);
+        n =  isNaN(n) ? 0 : n.toFixed(2);
+        var out = n.toString().replace(".", "|");
+        out = out.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "<TMPL_VAR GROUP_SEPARATOR>");
+        out = out.replace("|", "<TMPL_VAR DECIMAL_POINT>");
+        return out;
+    }
+    var elements= document.getElementsByClassName("money");
+    for (var i = 0; i < elements.length; i++) {
+        var element = elements[i];
+        element.style.textAlign='right';
+        if (element.innerHTML.indexOf("-") > -1) {
+            element.style.color="#ff0000";
+        } 
+        element.innerHTML = '<TMPL_VAR PFX_SYMBOL>' + currency(element.innerHTML) +'<TMPL_VAR SFX_SYMBOL>';
+    }
+</script>
+</html>

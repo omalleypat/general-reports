@@ -1,0 +1,1 @@
+SELECT ID, TransactionType, Date, Category, Subcategory, Amount, AccountName, ToAccountName, Splitted, Payee, TransactionNumber, Status, Notes FROM alldata WHERE CATEGID IS 26 ORDER BY Date

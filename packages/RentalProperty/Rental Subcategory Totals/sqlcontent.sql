@@ -1,0 +1,1 @@
+SELECT Subcategory, Total(Amount) as Total, Year FROM alldata WHERE CATEGID IS 26 Group by "Subcategory"

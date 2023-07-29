@@ -1,0 +1,1 @@
+SELECT * FROM alldata WHERE ACCOUNTID is 17 AND CATEGID IS NOT 26 AND TransactionType IS NOT "Transfer"
