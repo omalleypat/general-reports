@@ -1,0 +1,16 @@
+How to Interpret "Outflow Since Last Salary"
+
+This value represents the total cash leaving the checking account between paychecks. This is based on a specific Catergory ID.
+Only negative transactions (withdrawals and transfers out) are included.
+
+All data is presented for the chosen account for verification purposes.
+Deposits other than salary are intentionally ignored
+Transfers into the account are ignored
+The value is shown on each salary transaction row
+
+Practical use:
+The largest value in this column over time is a strong indicator of the minimum checking account balance needed to safely cover expenses between paychecks.
+
+How to modify:
+Make sure the ACCOUNTID in the SQL and Lua is correct (e.g. your checking account - default 44).
+Make sure the CATEDIG in the Lua is correct (e.g. salary - defaultt 69).

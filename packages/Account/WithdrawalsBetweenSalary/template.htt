@@ -1,0 +1,88 @@
+<html>
+<head>
+    <title>Account 44 Transaction Ledger</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #888; padding: 4px; }
+        th { background-color: #eee; }
+        td.num { text-align: right; }
+    </style>
+</head>
+<body>
+
+<h2>Account 44 - Transactions and Paycheck Depletion</h2>
+
+<table>
+<tr>
+    <th>Date</th>
+    <th>TransCode</th>
+    <th>Account</th>
+    <th>To Account</th>
+    <th>Amount</th>
+    <th>Category</th>
+    <th>Running Balance</th>
+    <th>Outflow Since Last Salary</th>
+</tr>
+
+<TMPL_LOOP NAME=CONTENTS>
+<tr>
+    <td><TMPL_VAR NAME="trans_date"/></td>
+    <td><TMPL_VAR NAME="TRANSCODE"/></td>
+    <td class="num"><TMPL_VAR NAME="ACCOUNTID"/></td>
+    <td class="num"><TMPL_VAR NAME="TOACCOUNTID"/></td>
+    <td class="money"><TMPL_VAR NAME="signed_amount"/></td>
+    <td class="num"><TMPL_VAR NAME="CATEGID"/></td>
+    <td class="money"><TMPL_VAR NAME="running_balance"/></td>
+    <td class="money"><TMPL_VAR NAME="drawdown_since_last_salary"/></td>
+</tr>
+</TMPL_LOOP>
+
+</table>
+
+<hr/>
+
+<h3>How to Interpret "Outflow Since Last Salary"</h3>
+
+<p>
+This value represents the <b>total cash leaving the checking account between paychecks</b>.
+Only negative transactions (withdrawals and transfers out) are included.
+</p>
+
+<ul>
+<li>Deposits other than salary are intentionally ignored</li>
+<li>Transfers into the account are ignored</li>
+<li>The value is shown on each salary transaction row</li>
+</ul>
+
+<p>
+<b>Practical use:</b><br/>
+The largest value in this column over time is a strong indicator of the
+<b>minimum checking account balance needed to safely cover expenses between paychecks</b>.
+</p>
+
+</body>
+<script>
+    <!-- Format double to base currency -->
+    function currency(n) {
+        n = parseFloat(n);
+        n =  isNaN(n) ? "" : n.toFixed(2);
+        var out = n.toString().replace(".", "|");
+        out = out.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "<TMPL_VAR GROUP_SEPARATOR>");
+        out = out.replace("|", "<TMPL_VAR DECIMAL_POINT>");
+        return out;
+    }
+    var elements= document.getElementsByClassName("money");
+    for (var i = 0; i < elements.length; i++) {
+        var element = elements[i];
+        element.style.textAlign='right';
+        if (element.innerHTML.indexOf("-") > -1) {
+            element.style.color="#ff0000";
+        } 
+       if (element.innerHTML == "") {
+}
+else {
+	element.innerHTML = '<TMPL_VAR PFX_SYMBOL>' + currency(element.innerHTML) +'<TMPL_VAR SFX_SYMBOL>';
+}
+    }
+</script>
+</html>
