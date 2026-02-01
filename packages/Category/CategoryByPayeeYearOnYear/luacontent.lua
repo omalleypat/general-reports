@@ -1,12 +1,16 @@
-local cols = {"2023","2022","2021","2020","2019", "2018", "2017", "2016", "2015", "2014", "2013", "2012" , "2011", "2010", "2009", "2008", "Total ('08-'23)"};
-function handle_record(record)
-	for i=1,16 do
-   		local amount = -1*tonumber(record:get(cols[i]));
-		
-		if amount == 0 then
-			record:set(cols[i],"");
-		else
-			record:set(cols[i],string.format("%.2f",amount));
-		end
-	end
+-- Lua: Replace zeros with blanks in all numeric fields
+function handle_record(r)
+  -- loop over known columns
+  local cols = {"Y1","Y2","Y3","Y4","Y5","TOTAL"}
+
+  for _,col in ipairs(cols) do
+    local val = r:get(col)
+    -- convert to number and check
+    if tonumber(val) == 0 then
+      r:set(col, "")
+    else
+      -- optional: format non-zero numbers with 2 decimals
+      r:set(col, string.format("%.2f", tonumber(val)))
+    end
+  end
 end
